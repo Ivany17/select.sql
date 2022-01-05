@@ -8,11 +8,11 @@ const config = {
     database:'fm-test'
 };
 
-const user = [
+const users = [
     {
     first_name: 'Tom',
     last_name: 'Cat',
-    email: 'Tomandjerry@gmail.com',
+    email: 'Tomanjerry@gmail.com',
     is_male: true,
     birthday: '1939-03-01',
     height: 1.02,
@@ -20,7 +20,7 @@ const user = [
 {
     first_name: 'Jerry',
     last_name: 'Mouse',
-    email: 'Tomandjerry@gmail.com',
+    email: 'Tomandmouse@gmail.com',
     is_male: true,
     birthday: '1939-05-01',
     height: 1.01,
@@ -28,7 +28,7 @@ const user = [
 {
     first_name: 'Spike',
     last_name: 'Dog',
-    email: 'Tomandjerry@gmail.com',
+    email: 'Tom&jerry@gmail.com',
     is_male: true,
     birthday: '1939-03-01',
     height: 1.08,
@@ -42,8 +42,7 @@ async function start(){
     await client.connect();
     const res = await client.query(`
         INSERT INTO "users"("first_name","last_name","email","is_male","birthday","height")
-        VALUES
-            ('${user.first_name}', '${user.last_name}', '${user.email}', '${user.is_male}', '${user.birthday}', '${user.height}');
+        VALUES ${mapUsers(users)};
     `);
     console.log(res);
     await client.end();
@@ -51,6 +50,9 @@ async function start(){
 
 function mapUsers(users){
     return users
-        .map()
-        .join()
+        .map(
+            user => `('${user.first_name}', '${user.last_name}', '${user.email}', '${user.is_male}', '${user.birthday}', '${user.height}')`
+        )  
+        .join(',')
 }
+//console.log(mapUsers(users));
